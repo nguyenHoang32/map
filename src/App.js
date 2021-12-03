@@ -168,27 +168,15 @@ function App() {
     // domElement.addEventListener('touchcancel', touchend, false);
 
     function mousedown(e) {
-      // console.log(e.srcElement.getAttribute('style'));
-      // if(e.srcElement.getAttribute('style') && e.target.localName === "path"){
-      //   console.log(1);
-      //   e.srcElement.removeAttribute('style');
-      // }
-      // else if(e.target.localName === "path"){
-      //   console.log(2);
-      //   e.srcElement.setAttribute('style', 'fill: green');
-      // }
-      // else{
-      //   console.log(3)
-      // }
-      // console.log(e.srcElement.id)
       let path = document.querySelectorAll("path");
       path.forEach((path) => path.removeAttribute("style"));
-
+      console.log(e.target.transform);
       if (e.target.localName === "path") {
         e.srcElement.setAttribute("style", "fill: pink");
         let obj = {
-          name: 'Noname',
-          id: uid()
+          name: 'No',
+          id: uid(),
+          square: 1
         };
         for(let i = 0; i <= 2; i++ ){
           for(let j = 0; j <= 2; j++){
@@ -362,8 +350,10 @@ function App() {
       
       {(!isEmpty(info) && info) && (
         <div className="info">
-          <h1>Name: {info.name}</h1>
+          <h1>Owner: {info.name}</h1>
           <h2>Id: {info.id}</h2>
+          <h2>Square:  {info.square} x {info.square}</h2>
+          <h2>Position:  {info.x} x {info.y}</h2>
           <h3>{info.category}</h3>
           {info.urlImage ? <img src={info.urlImage}/> :<img src="./assets/green.jpg" />}
           
