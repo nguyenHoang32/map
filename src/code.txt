@@ -1,0 +1,66 @@
+function createGrid(s) {
+    var size = s || 30;
+    var two = new Two({
+      type: Two.Types.canvas,
+      width: size,
+      height: size,
+    });
+
+    var a = two.makeLine(two.width / 2, 0, two.width / 2, two.height);
+    // var b = two.makeLine(0, two.height / 2, two.width, two.height / 2);
+    a.stroke = "#6dcff6";
+    // b.stroke = '#6dcff6';
+    two.update();
+
+    var imageData = two.renderer.domElement.toDataURL("image/png");
+    document.body.style.bacgroundColor = "white";
+    document.body.style.backgroundImage = `url(${imageData})`;
+    // document.body.style.backgroundImage = `url('logo192.png')`;
+    document.body.style.backgroundSize = `${size}px`;
+  }
+  var stage = new Two.Group();
+  var mouse = new Two.Vector();
+  var domElement = two.renderer.domElement;
+  function callImg(i, j) {
+    const onClick = (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+      var rect = shape.getBoundingClientRect();
+      console.log(rect)
+      console.log( mouse.x > rect.left && mouse.x < rect.right
+        && mouse.y > rect.top && mouse.y < rect.bottom)
+    }
+    var sizeX = 200;
+    var sizeY = 300;
+    var x = sizeX * j;
+    var y = sizeY * i;
+    let texture = new Two.Texture(`./assetsCopy/${i}_${j}.jpg`);
+
+    var shape = new Two.Rectangle(x, y, sizeX, sizeY);
+    shape.noStroke().fill = texture;
+    two.update();
+    console.log(shape._renderer);
+    // shape.addEventListener('click', onClick, false);
+    console.log(shape)
+    stage.add(shape);
+    domElement.addEventListener('click', onClick);
+   
+    // texture.clasName = "my-image";
+  }
+  const createUi = async () => {
+    let promies = [];
+    for (var i = 1; i < 3; i++) {
+      for (let j = 1; j < 3; j++) {
+        promies.push(callImg(i, j));
+        // document.body.style.backgroundImage = `url(${imageData})`;
+
+        // shape.rotation = Math.random() * Math.PI * 2;
+      }
+    }
+    Promise.all(promies).then(() => {
+      two.add(stage);
+      two.update();
+    });
+  };
+
+  createUi();
