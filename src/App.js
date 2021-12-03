@@ -7,19 +7,20 @@ const uid = function () {
   return Date.now().toString(36) + Math.random().toString(36).substr(2);
 };
 
-const list = [
-  {
-    name: "1",
-    id: 1,
-  },
-  {
-    name: "2",
-    id: uid(),
-  },
-  {
-    name: "3",
-    id: uid(),
-  },
+const list = [[{
+  name: "1",
+  id: uid(),
+},
+{
+  name: "2",
+  id: uid(),
+},
+{
+  name: "3",
+  id: uid(),
+}
+],
+[
   {
     name: "4",
     id: uid(),
@@ -32,67 +33,60 @@ const list = [
     name: "6",
     id: uid(),
   },
-  {
-    name: "7",
-    id: uid(),
-  },
-  {
-    name: "8",
-    id: uid(),
-  },
-  {
-    name: "9",
-    id: uid(),
-  },
+],
+[{
+  name: "7",
+  id: uid(),
+},
+{
+  name: "8",
+  id: uid(),
+},
+{
+  name: "9",
+  id: uid(),
+},]
 ];
-
+console.log(list);
 function App() {
   // const [id, setId] = useState(null);
   const [info, setInfo] = useState({});
 
-  let id;
-  const two = new Two({
-    // type: Two.Types.canvas,
-    // type: Two.Types.svg,
-    fullscreen: true,
-
-    autostart: true,
-  }).appendTo(document.body);
-  const zui = new ZUI(two.scene);
-  zui.addLimits(0.06, 8);
   // ----------------------------------------
   useEffect(() => {
+    const two = new Two({
+      // type: Two.Types.canvas,
+      // type: Two.Types.svg,
+      fullscreen: true,
+      autostart: true,
+    }).appendTo(document.body);
+    const zui = new ZUI(two.scene);
+    zui.addLimits(0.06, 8);
     var stage = new Two.Group();
-  const size = 50;
-  for (var i = 1; i <= 1; i++) {
-    // y
-    // let shape;
-    for (let j = 1; j <= 3; j++) {
-      // x
-      var x = size * j - size / 2;
-      var y = size * i - size / 2;
-      var shape = new Two.Rectangle(x, y, size, size);
-      shape.noStroke().fill = "green";
-      shape.id = list[i * j]["id"];
-      shape.stroke = "black";
-      stage.add(shape);
+    const size = 50;
+    for (let i = 0; i <= 2; i++) {
+      // y
+      // let shape;
+      for (let j = 0; j <= 2; j++) {
+        // x
+        var x = size * j - size / 2;
+        var y = size * i - size / 2;
+        var shape = new Two.Rectangle(x, y, size, size);
+        shape.noStroke().fill = "green";
+        shape.id = list[i][j]["id"];
+        shape.stroke = "black";
+        stage.add(shape);
+      }
     }
-  }
+    two.add(stage);
+    two.update();
 
-  two.add(stage);
-  two.update();
-    
-  
-  }, []);
-  // -----------------------------------------------
-  // ------------------------------------------
-  
-  var domElement = two.renderer.domElement;
-  var mouse = new Two.Vector();
-  var touches = {};
-  var distance = 0;
-  var dragging = false;
-  addZUI();
+    var domElement = two.renderer.domElement;
+    var mouse = new Two.Vector();
+    var touches = {};
+    var distance = 0;
+    var dragging = false;
+    addZUI();
   function addZUI() {
     domElement.addEventListener("mousedown", mousedown, false);
     domElement.addEventListener("mousewheel", mousewheel, false);
@@ -119,12 +113,21 @@ function App() {
       // console.log(e.srcElement.id)
       let path = document.querySelectorAll("path");
       path.forEach((path) => path.removeAttribute("style"));
+
       if (e.target.localName === "path") {
-        id = e.srcElement.id;
+        console.log(e.srcElement.id);
         e.srcElement.setAttribute("style", "fill: pink");
-        const obj = list.filter((obj) => obj.id === e.srcElement.id)[0];
+        let obj;
+        for(let i = 0; i <= 2; i++ ){
+          for(let j = 0; j <= 2; j++){
+            if(list[i][j]["id"] === e.srcElement.id){
+              obj = list[i][j];
+            }
+          }
+        }
+        // const obj = list.filter((obj) => obj.id === e.srcElement.id)[0];
         // info = obj;
-        // setInfo({ name: "1", id: 1 });
+        setInfo(obj);
       }
       mouse.x = e.clientX;
       mouse.y = e.clientY;
@@ -137,6 +140,9 @@ function App() {
       window.addEventListener("mousemove", mousemove, false);
       window.addEventListener("mouseup", mouseup, false);
     }
+  }
+
+    // -------------
 
     function mousemove(e) {
       var dx = e.clientX - mouse.x;
@@ -235,12 +241,16 @@ function App() {
       zui.zoomBy(delta / 250, mouse.x, mouse.y);
       distance = d;
     }
-  }
-  
+  }, []);
 
+  // -----------------------------------------------
+  // ------------------------------------------
+
+  
+  
   return (
     <div>
-      {id && info && (
+      {info && (
         <div className="info">
           <h1>{info.name}</h1>
           <h2>{info.id}</h2>
