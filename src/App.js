@@ -10,18 +10,28 @@ const uid = function () {
 const list = [[{
   name: "1",
   id: uid(),
-  category: "nofilter"
+  category: "nofilter",
+  x: 1,
+  y: 1,
+  square: 4,
 },
 {
   name: "2",
   id: uid(),
   category: "filter",
-  urlImage: './assets/2.jpg'
+  urlImage: './assets/2.jpg',
+  x: 1,
+  y: 6,
+  square: 3,
 },
 {
   name: "3",
   id: uid(),
   category: "nofilter",
+  x: 8,
+  y: 8,
+  square: 4,
+  urlImage: './assets/google.png',
 }
 ],
 [
@@ -29,37 +39,55 @@ const list = [[{
     name: "4",
     id: uid(),
     category: "filter",
+    x: 6,
+  y: 1,
+  square: 2,
   },
   {
     name: "5",
     id: uid(),
     category: "nofilter",
-    urlImage: './assets/5.jpg'
+    urlImage: './assets/5.jpg',
+    x: 12,
+  y: 10,
+  square: 2,
   },
   {
     name: "6",
     id: uid(),
     category: "nofilter",
+    x: 20,
+  y: 8,
+  square:2,
   },
 ],
 [{
   name: "7",
   id: uid(),
   category: "nofilter",
-  urlImage: './assets/7.jpg'
+  urlImage: './assets/7.jpg',
+  x: 24,
+  y: 4,
+  square: 6,
 },
 {
   name: "8",
   id: uid(),
   category: "filter",
+  x: 16,
+  y: 8,
+  square: 4,
 },
 {
   name: "9",
   id: uid(),
   category: "nofilter",
+  x: 16,
+  y: 16,
+  square: 4,
 },]
 ];
-console.log(list);
+
 function App() {
   // const [id, setId] = useState(null);
   const [info, setInfo] = useState({});
@@ -80,18 +108,68 @@ function App() {
     const zui = new ZUI(stage);
 
     zui.addLimits(0.1, 6);
-    const size = 200;
-    for (let i = 0; i <= 2; i++) {
+    const size = 100;
+    for (let i = 0; i < 30; i++) {
       // y
       // let shape;
-      for (let j = 0; j <= 2; j++) {
+      for (let j = 0; j < 30; j++) {
         // x
         var x = size * j - size / 2;
         var y = size * i - size / 2;
-        var shape = new Two.Rectangle(x + 300, y+300, size, size);
+        var shape = new Two.Rectangle(x + 300, y+300,size, size);
+        shape.noStroke().fill = "green";
+        shape.stroke = "black";
+        stage.add(shape);
+      }
+    }
+    for (let i = 0; i < list.length; i++) {
+      // y
+      // let shape;
+      for (let j = 0; j < list[0].length; j++) {
+        // x
+        let size = 100;
+        // console.log(size)
+        var x = size * list[i][j].x;
+        var y = size * list[i][j].y;
+        var shape = new Two.Rectangle(x + 300, y+300, list[i][j].square * size, list[i][j].square * size);
         if(list[i][j]["urlImage"]){
-          let texture = new Two.Texture(list[i][j]["urlImage"]) ;
-          shape.noStroke().fill = texture;
+          let img = new Two.Texture(list[i][j]["urlImage"]);
+        //   img.onload = function() {
+        //     var canvas = document.createElement('canvas'),
+        //         ctx = canvas.getContext("2d"),
+        //         oc = document.createElement('canvas'),
+        //         octx = oc.getContext('2d');
+         
+        //     canvas.width = 200; // destination canvas size
+        //     canvas.height = canvas.width * img.height / img.width;
+         
+        //     var cur = {
+        //       width: 200,
+        //       height: 200
+        //     }
+         
+        //     oc.width = cur.width;
+        //     oc.height = cur.height;
+         
+        //     octx.drawImage(img, 0, 0, cur.width, cur.height);
+         
+        //     while (cur.width * 0.5 > 500) {
+        //       cur = {
+        //         width: Math.floor(cur.width * 0.5),
+        //         height: Math.floor(cur.height * 0.5)
+        //       };
+        //       octx.drawImage(oc, 0, 0, cur.width * 2, cur.height * 2, 0, 0, cur.width, cur.height);
+        //     }
+         
+        //     ctx.drawImage(oc, 0, 0, cur.width, cur.height, 0, 0, canvas.width, canvas.height);
+        //  }
+          // texture.image.style.width = list[i][j].square * size + 'px';
+          // texture.image.style.height = list[i][j].square * size + 'px';
+          // texture.image.style.backgroundPosition  = 'center';
+          // texture.image.style.backgroundRepeat ='no-repeat';
+          // texture.image.style.backgroundSize= 'cover';
+          // console.log(texture);
+          shape.noStroke().fill = img;
         }else{
           shape.noStroke().fill = "green";
         }
@@ -138,7 +216,6 @@ function App() {
       path.forEach((path) => path.removeAttribute("style"));
 
       if (e.target.localName === "path") {
-        console.log(e.srcElement.id);
         e.srcElement.setAttribute("style", "fill: pink");
         let obj;
         for(let i = 0; i <= 2; i++ ){
@@ -311,7 +388,7 @@ function App() {
       </div>
       <div id="map"></div>
       
-      {!isEmpty(info)  && (
+      {!isEmpty(info) && info && (
         <div className="info">
           <h1>Name: {info.name}</h1>
           <h2>Id: {info.id}</h2>
