@@ -134,41 +134,9 @@ function App() {
         var shape = new Two.Rectangle(x + 300, y+300, list[i][j].square * size, list[i][j].square * size);
         if(list[i][j]["urlImage"]){
           let img = new Two.Texture(list[i][j]["urlImage"]);
-        //   img.onload = function() {
-        //     var canvas = document.createElement('canvas'),
-        //         ctx = canvas.getContext("2d"),
-        //         oc = document.createElement('canvas'),
-        //         octx = oc.getContext('2d');
+       
          
-        //     canvas.width = 200; // destination canvas size
-        //     canvas.height = canvas.width * img.height / img.width;
-         
-        //     var cur = {
-        //       width: 200,
-        //       height: 200
-        //     }
-         
-        //     oc.width = cur.width;
-        //     oc.height = cur.height;
-         
-        //     octx.drawImage(img, 0, 0, cur.width, cur.height);
-         
-        //     while (cur.width * 0.5 > 500) {
-        //       cur = {
-        //         width: Math.floor(cur.width * 0.5),
-        //         height: Math.floor(cur.height * 0.5)
-        //       };
-        //       octx.drawImage(oc, 0, 0, cur.width * 2, cur.height * 2, 0, 0, cur.width, cur.height);
-        //     }
-         
-        //     ctx.drawImage(oc, 0, 0, cur.width, cur.height, 0, 0, canvas.width, canvas.height);
-        //  }
-          // texture.image.style.width = list[i][j].square * size + 'px';
-          // texture.image.style.height = list[i][j].square * size + 'px';
-          // texture.image.style.backgroundPosition  = 'center';
-          // texture.image.style.backgroundRepeat ='no-repeat';
-          // texture.image.style.backgroundSize= 'cover';
-          // console.log(texture);
+          // console.log(img);
           shape.noStroke().fill = img;
         }else{
           shape.noStroke().fill = "green";
