@@ -3,12 +3,40 @@ html{
   padding: 0;
   position: relative;
 }
+#map{
+  margin-top: 20px;
+  width: 500px;
+  height: 500px;
+}
 .info{
   position: absolute;
   top: 0;
   right: 0;
   width: 300px;
-  height: 400px;
+  height: 100vh;
   background: #ccc;
   color: red;
+}
+img{
+  width: 300px;
+  height: 300px;
+}
+.btn-div{
+  z-index: 9999;
+  position: absolute;
+  top: 0;
+  left: 40%;
+  width: 200px;
+  height:auto;
+}
+button{
+  z-index: 9999;
+  width: 80px;
+  height: 80px;
+  text-transform: uppercase;
+  font-size: 16px;
+  /* border: none; */
+  border-radius: 10px;
+  background-color: tomato;
+  color: white;
 }

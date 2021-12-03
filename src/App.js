@@ -10,41 +10,53 @@ const uid = function () {
 const list = [[{
   name: "1",
   id: uid(),
+  category: "nofilter"
 },
 {
   name: "2",
   id: uid(),
+  category: "filter",
+  urlImage: './assets/2.jpg'
 },
 {
   name: "3",
   id: uid(),
+  category: "nofilter",
 }
 ],
 [
   {
     name: "4",
     id: uid(),
+    category: "filter",
   },
   {
     name: "5",
     id: uid(),
+    category: "nofilter",
+    urlImage: './assets/5.jpg'
   },
   {
     name: "6",
     id: uid(),
+    category: "nofilter",
   },
 ],
 [{
   name: "7",
   id: uid(),
+  category: "nofilter",
+  urlImage: './assets/7.jpg'
 },
 {
   name: "8",
   id: uid(),
+  category: "filter",
 },
 {
   name: "9",
   id: uid(),
+  category: "nofilter",
 },]
 ];
 console.log(list);
@@ -58,12 +70,17 @@ function App() {
       // type: Two.Types.canvas,
       // type: Two.Types.svg,
       fullscreen: true,
+      width: 800,
+      height: 800,
       autostart: true,
-    }).appendTo(document.body);
-    const zui = new ZUI(two.scene);
-    zui.addLimits(0.06, 8);
+    }).appendTo(document.getElementById("map"));
+   
+
     var stage = new Two.Group();
-    const size = 50;
+    const zui = new ZUI(stage);
+
+    zui.addLimits(0.1, 6);
+    const size = 200;
     for (let i = 0; i <= 2; i++) {
       // y
       // let shape;
@@ -71,8 +88,14 @@ function App() {
         // x
         var x = size * j - size / 2;
         var y = size * i - size / 2;
-        var shape = new Two.Rectangle(x, y, size, size);
-        shape.noStroke().fill = "green";
+        var shape = new Two.Rectangle(x + 300, y+300, size, size);
+        if(list[i][j]["urlImage"]){
+          let texture = new Two.Texture(list[i][j]["urlImage"]) ;
+          shape.noStroke().fill = texture;
+        }else{
+          shape.noStroke().fill = "green";
+        }
+
         shape.id = list[i][j]["id"];
         shape.stroke = "black";
         stage.add(shape);
@@ -246,15 +269,56 @@ function App() {
   // -----------------------------------------------
   // ------------------------------------------
 
+  function isEmpty(obj) {
+    for(var prop in obj) {
+      if(Object.prototype.hasOwnProperty.call(obj, prop)) {
+        return false;
+      }
+    }
   
-  
+    return JSON.stringify(obj) === JSON.stringify({});
+  }
+  const handleFilter = () => {
+    let ids = []
+    for(let i = 0; i <= 2; i++ ){
+      for(let j = 0; j <= 2; j++){
+        if(list[i][j]["category"] === "filter"){
+          ids.push(list[i][j]["id"])
+        }
+      }
+    }
+    // console.log(ids)
+    let path = document.querySelectorAll("path");
+    for(let i = 0; i < path.length; i++){
+      if(ids.includes(path[i].id)){
+        path[i].setAttribute("style", "fill: pink");
+      }
+    }
+    // path.filter((path) => path.removeAttribute("style"));
+    // e.srcElement.setAttribute("style", "fill: pink");
+  }
+  const handleRemoveFilter = () => {
+    let path = document.querySelectorAll("path");
+    path.forEach((path) => path.removeAttribute("style"));
+  }
   return (
     <div>
-      {info && (
+      <div className="btn-div">
+
+      
+      <button onClick={handleFilter}>Filter</button>
+      <button onClick={handleRemoveFilter}>Remove filter</button>
+      </div>
+      <div id="map"></div>
+      
+      {!isEmpty(info)  && (
         <div className="info">
-          <h1>{info.name}</h1>
-          <h2>{info.id}</h2>
-        </div>
+          <h1>Name: {info.name}</h1>
+          <h2>Id: {info.id}</h2>
+          <h3>{info.category}</h3>
+          {info.urlImage ? <img src={info.urlImage}/> :<img src="./assets/green.jpg" />}
+          
+         </div>
       )}
     </div>
   );
