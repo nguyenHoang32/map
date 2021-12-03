@@ -119,6 +119,7 @@ function App() {
         var shape = new Two.Rectangle(x + 300, y+300,size, size);
         shape.noStroke().fill = "green";
         shape.stroke = "black";
+        shape.id = uid();
         stage.add(shape);
       }
     }
@@ -185,7 +186,10 @@ function App() {
 
       if (e.target.localName === "path") {
         e.srcElement.setAttribute("style", "fill: pink");
-        let obj;
+        let obj = {
+          name: 'Noname',
+          id: uid()
+        };
         for(let i = 0; i <= 2; i++ ){
           for(let j = 0; j <= 2; j++){
             if(list[i][j]["id"] === e.srcElement.id){
@@ -356,7 +360,7 @@ function App() {
       </div>
       <div id="map"></div>
       
-      {!isEmpty(info) && info && (
+      {(!isEmpty(info) && info) && (
         <div className="info">
           <h1>Name: {info.name}</h1>
           <h2>Id: {info.id}</h2>
